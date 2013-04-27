@@ -103,39 +103,38 @@ function player_shot_blob(i) {
 
 var CANVAS_PX_SIZE = 4;
 
-var CURRENT_CANVAS = [];
-for (var y = 0; y < MAP.length; y++) {
-    CURRENT_CANVAS[y] = [];
-    for (var x = 0; x < MAP[y].length; x++) {
-        CURRENT_CANVAS[y][x] = [255, 255, 255];
+function draw_level_canvas(canvas, pos, border) {
+    var cx = pos[0];
+    var cy = pos[1];
+    for (var y = 0; y < canvas.length; y++) {
+        for (var x = 0; x < canvas[y].length; x++) {
+            var c = canvas[y][x];
+            CTX.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
+            CTX.fillRect((cx+x)*CANVAS_PX_SIZE, (cy+y)*CANVAS_PX_SIZE,
+                         CANVAS_PX_SIZE, CANVAS_PX_SIZE);
+        }
+    }
+    if (border) {
+        CTX.beginPath();
+        CTX.rect(cx*CANVAS_PX_SIZE, cy*CANVAS_PX_SIZE,
+                 canvas[0].length*CANVAS_PX_SIZE,
+                 canvas.length*CANVAS_PX_SIZE);
+        CTX.lineWidth = CANVAS_PX_SIZE;
+        CTX.strokeStyle = "#333";
+        CTX.stroke();
     }
 }
+
 
 function update_level_canvas(pos, r, g, b, factor)
 {
     var x = Math.round(pos[0]);
     var y = Math.round(pos[1]);
-    if (y >= 0 && y < CURRENT_CANVAS.length
-    &&  x >= 0 && x < CURRENT_CANVAS[y].length) {
-        CURRENT_CANVAS[y][x][0] = Math.round((CURRENT_CANVAS[y][x][0]*factor + r)/(factor+1));
-        CURRENT_CANVAS[y][x][1] = Math.round((CURRENT_CANVAS[y][x][1]*factor + g)/(factor+1));
-        CURRENT_CANVAS[y][x][2] = Math.round((CURRENT_CANVAS[y][x][2]*factor + b)/(factor+1));
-    }
-}
-
-function draw_level_canvas_preview()
-{
-    CTX.fillStyle = "#333";
-    CTX.fillRect(0, 0,
-                 CANVAS_PX_SIZE*CURRENT_CANVAS[0].length + CANVAS_PX_SIZE,
-                 CANVAS_PX_SIZE*CURRENT_CANVAS.length + CANVAS_PX_SIZE);
-    for (var y = 0; y < CURRENT_CANVAS.length; y++) {
-        for (var x = 0; x < CURRENT_CANVAS[y].length; x++) {
-            var c = CURRENT_CANVAS[y][x];
-            CTX.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
-            CTX.fillRect(x*CANVAS_PX_SIZE, y*CANVAS_PX_SIZE,
-                         CANVAS_PX_SIZE, CANVAS_PX_SIZE);
-        }
+    if (y >= 0 && y < LEVEL.canvas.length
+    &&  x >= 0 && x < LEVEL.canvas[y].length) {
+        LEVEL.canvas[y][x][0] = Math.round((LEVEL.canvas[y][x][0]*factor + r)/(factor+1));
+        LEVEL.canvas[y][x][1] = Math.round((LEVEL.canvas[y][x][1]*factor + g)/(factor+1));
+        LEVEL.canvas[y][x][2] = Math.round((LEVEL.canvas[y][x][2]*factor + b)/(factor+1));
     }
 }
 

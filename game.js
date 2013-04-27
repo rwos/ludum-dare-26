@@ -21,7 +21,6 @@ function cast_ray(x, dir) {
         }
         var hit = world_at(end);
         if (hit) {
-            LOG(end + " - " + hit + "|||" +  dist);
             break;
         }
     }
@@ -80,14 +79,19 @@ function draw_blobs(blobs) {
 //////////////////// PLAYER
 
 function player_world_at(pos) {
-    return world_at([Math.floor(pos[0]),
-                     Math.floor(pos[1])]) == "#"
-        || world_at([Math.ceil(pos[0]),
-                     Math.ceil(pos[1])]) == "#"
-        || world_at([Math.floor(pos[0]),
-                     Math.ceil(pos[1])]) == "#"
-        || world_at([Math.ceil(pos[0]),
-                     Math.floor(pos[1])]) == "#";
+    var hit = world_at([Math.floor(pos[0]),
+                        Math.floor(pos[1])])
+           || world_at([Math.ceil(pos[0]),
+                        Math.ceil(pos[1])])
+           || world_at([Math.floor(pos[0]),
+                        Math.ceil(pos[1])])
+           || world_at([Math.ceil(pos[0]),
+                        Math.floor(pos[1])]);
+    if (hit == "X") {
+        level_won();
+        return false;
+    }
+    return (hit == "#");
 }
 
 function player_move(pos, dir, dist) {
@@ -130,6 +134,10 @@ function update_screen() {
     update_player_health(blobs_seen);
 }
 
+var LEVEL_WON = false;
+var LEVEL_LOST = false;
+function level_won() {LEVEL_WON = true;}
+
 function game_frame() {
     if (KEY[UP] || KEY[ord("W")]) {
         player.pos = player_move(player.pos, player.dir, SPEED);
@@ -158,7 +166,15 @@ function game_frame() {
     player.shooting = KEY[ord(" ")] ? true : false;
     update_blobs();
     update_screen();
-    draw_level_canvas_preview();
-    LOG("health: " + player.health + " --> " + player.shooting);
+    // XXX TODO: draw HUD
+    draw_level_canvas(LEVEL.canvas, [0, 0], true);
+    LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos);
+    if (LEVEL_WON) {
+        return 1;
+    } else if (LEVEL_LOST) {
+        return -1;
+    } else {
+        return 0;
+    }
 }
 
