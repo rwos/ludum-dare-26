@@ -1,36 +1,14 @@
-//////////////////// WORLD
 
-var world = [
-"         #####                   ",
-"           ###                   ",
-"           ###                   ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"                                 ",
-"           ################      ",
-"    #      ##############        ",
-"    #        ##                  ",
-"    ####     ##                  ",
-"    ######   ##                  ",
-];
+//////////////////// WORLD
 
 function world_at(pos) {
     var x = Math.round(pos[0]);
     var y = Math.round(pos[1]);
-    if (y >= 0 && y < world.length
-    &&  x >= 0 && x < world[y].length) {
-        if (world[y][x] == " ")
+    if (y >= 0 && y < MAP.length
+    &&  x >= 0 && x < MAP[y].length) {
+        if (MAP[y][x] == " ")
             return false;
-        return world[y][x];
+        return MAP[y][x];
     }
     return "#";
 }
@@ -97,7 +75,7 @@ function update_blobs() {
 }
 
 function blob_color(dist, rgb) {
-    var d = Math.round(255 * (dist/RAY_RANGE));
+    var d = Math.round(MAX_COLOR * (dist/RAY_RANGE));
     if (rgb == "green")
         return "rgb(" + d + ",255," + d + ")";
     else if (rgb == "blue")
@@ -110,14 +88,19 @@ function player_shot_blob(i) {
     if (typeof blobs[i] == "undefined")
         return;
     blobs[i].health *= SHOOT_DAMAGE_FACTOR;
-    if (blobs[i].color == "green")
+    if (blobs[i].color == "green") {
         update_level_canvas(player.pos, 0, 255, 0, 1);
-    else if (blobs[i].color == "blue")
+        document.body.style.background = "#aaddaa";
+    } else if (blobs[i].color == "blue") {
         update_level_canvas(player.pos, 0, 0, 255, 1);
-    else // yellow
+        document.body.style.background = "#aaaadd";
+    } else { // yellow
         update_level_canvas(player.pos, 255, 255, 0, 1);
+        document.body.style.background = "#ddddaa";
+    }
     // death
     if (blobs[i].health < BLOB_DIE_THRESHOLD) {
+        DEATH_FLASH = DEATH_FLASH_DURATION;
         blobs.splice(i, 1);
     }
 }
@@ -127,9 +110,9 @@ function player_shot_blob(i) {
 var CANVAS_PX_SIZE = 4;
 
 var CURRENT_CANVAS = [];
-for (var y = 0; y < world.length; y++) {
+for (var y = 0; y < MAP.length; y++) {
     CURRENT_CANVAS[y] = [];
-    for (var x = 0; x < world[y].length; x++) {
+    for (var x = 0; x < MAP[y].length; x++) {
         CURRENT_CANVAS[y][x] = [255, 255, 255];
     }
 }
@@ -148,7 +131,7 @@ function update_level_canvas(pos, r, g, b, factor)
 
 function draw_level_canvas_preview()
 {
-    CTX.fillStyle = "#000";
+    CTX.fillStyle = "#333";
     CTX.fillRect(0, 0,
                  CANVAS_PX_SIZE*CURRENT_CANVAS[0].length + CANVAS_PX_SIZE,
                  CANVAS_PX_SIZE*CURRENT_CANVAS.length + CANVAS_PX_SIZE);

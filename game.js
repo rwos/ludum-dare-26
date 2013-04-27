@@ -29,11 +29,11 @@ function cast_ray(x, dir) {
 }
 
 function wall_color(dist) {
-    var d = Math.round(255 * (dist/RAY_RANGE));
+    var d = Math.round(MAX_COLOR * (dist/RAY_RANGE));
     return "rgb(" + d + "," + d + "," + d + ")";
 }
 function goal_color(dist) {
-    var d = Math.round(255 * (dist/RAY_RANGE));
+    var d = Math.round(MAX_COLOR * (dist/RAY_RANGE));
     return "rgb(255," + d + ",255)";
 }
 
@@ -42,7 +42,7 @@ function draw_slice(x, dist, type) {
     if (dist == 0)
         height = H;
     var y_top = (H-height)/2;
-    CTX.fillStyle = "rgba(255,255,255,1)";
+    CTX.fillStyle = "#ddd";
     CTX.fillRect(x, 0, VERT_STEP, H);
     if (type == "X") {
         CTX.fillStyle = goal_color(dist);
@@ -67,11 +67,11 @@ function draw_blobs(blobs) {
             }
             z_buf[blob.scr_x] = blob.dist;
             var height = BLOB_HEIGHT / blob.dist;
-            var fill_height = height*blob.health;
+            var fill_height = height-height*blob.health;
             var y_top = (H-height)/2;
-            CTX.fillStyle = blob.color;
-            CTX.fillRect(blob.scr_x, y_top, VERT_STEP, fill_height);
             CTX.fillStyle = wall_color(blob.dist);
+            CTX.fillRect(blob.scr_x, y_top, VERT_STEP, fill_height);
+            CTX.fillStyle = blob.color;
             CTX.fillRect(blob.scr_x, y_top+fill_height, VERT_STEP, height-fill_height);
         }
     }
@@ -110,6 +110,7 @@ function update_player_health(blobs) {
             // player was hit
             player.health -= BLOB_HURT;
             update_level_canvas(player.pos, 255, 0, 0, 10);
+            document.body.style.background = "#ffaaaa";
         }
     }
 }
@@ -147,6 +148,12 @@ function game_frame() {
     }
     if (KEY[RIGHT]) {
         player.dir += ANG_SPEED;
+    }
+    if (DEATH_FLASH >= 0) {
+        DEATH_FLASH -= 1;
+        document.body.style.background = "#000000";
+    } else {
+        document.body.style.background = "#aaaaaa";
     }
     player.shooting = KEY[ord(" ")] ? true : false;
     update_blobs();
