@@ -1,7 +1,7 @@
 
 var player = {
-    pos: [2, 2],
-    dir: 1,
+    pos: LEVEL.start.slice(),
+    dir: LEVEL.dir,
     health: PLAYER_HEALTH,
     shooting: false,
 };

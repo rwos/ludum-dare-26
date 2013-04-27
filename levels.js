@@ -1,6 +1,8 @@
 var levels = [
     // LEVEL 1
     {
+        start: [1,1],
+        dir: 1,
         map: [
             "         #####                   ",
             "           ###                   ",
