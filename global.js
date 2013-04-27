@@ -14,11 +14,13 @@ var FOV = 90 * (Math.PI / 180);
 var VERT_STEP = 8;
 var RAY_RANGE = 20;
 var RAY_STEP = 0.1;
-var WALL_HEIGHT = 700;
-var BLOB_HEIGHT = 400;
-var BLOB_SIZE = 0.5;
 
-var SPEED = 0.5;
+var WALL_HEIGHT = 700;
+var WALL_Y_OFF = 20;
+var BLOB_HEIGHT = 300;
+var BLOB_SIZE = 0.8;
+
+var SPEED = 0.05;
 var ANG_SPEED = 0.05;
 
 var BLOB_SPEED = 0.06;
@@ -35,8 +37,9 @@ var BLOB_DIE_THRESHOLD = 0.1;
 
 var MAX_COLOR = 0xdd;
 
-var DEATH_FLASH = 0;
-var DEATH_FLASH_DURATION = 15;
+var FLASH = 0;
+var FLASH_DURATION = 15;
+var FLASH_COLOR;
 
 //////////////////// UTILS
 

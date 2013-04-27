@@ -40,7 +40,7 @@ function draw_slice(x, dist, type) {
     var height = WALL_HEIGHT/dist;
     if (dist == 0)
         height = H;
-    var y_top = (H-height)/2;
+    var y_top = (H-height)/2+WALL_Y_OFF;
     CTX.fillStyle = "#ddd";
     CTX.fillRect(x, 0, VERT_STEP, H);
     if (type == "X") {
@@ -67,7 +67,7 @@ function draw_blobs(blobs) {
             z_buf[blob.scr_x] = blob.dist;
             var height = BLOB_HEIGHT / blob.dist;
             var fill_height = height-height*blob.health;
-            var y_top = (H-height)/2;
+            var y_top = (H-height)/2 + 20;
             CTX.fillStyle = wall_color(blob.dist);
             CTX.fillRect(blob.scr_x, y_top, VERT_STEP, fill_height);
             CTX.fillStyle = blob.color;
@@ -88,6 +88,8 @@ function player_world_at(pos) {
            || world_at([Math.ceil(pos[0]),
                         Math.floor(pos[1])]);
     if (hit == "X") {
+        FLASH = FLASH_DURATION;
+        FLASH_COLOR = "#fff";
         level_won();
         return false;
     }
@@ -157,13 +159,14 @@ function game_frame() {
     if (KEY[RIGHT]) {
         player.dir += ANG_SPEED;
     }
-    if (DEATH_FLASH >= 0) {
-        DEATH_FLASH -= 1;
-        document.body.style.background = "#000000";
+    if (KEY[ord(" ")]) {
+        player.shooting = true;
+        // jitter
+        player.dir += (Math.random()-0.5)/50;
+        player.pos = player_move(player.pos, player.dir+Math.PI/2, (Math.random()-0.5)/50);
     } else {
-        document.body.style.background = "#aaaaaa";
+        player.shooting = false;
     }
-    player.shooting = KEY[ord(" ")] ? true : false;
     update_blobs();
     update_screen();
     // XXX TODO: draw HUD

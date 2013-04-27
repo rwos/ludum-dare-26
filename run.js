@@ -64,6 +64,12 @@ var frame_fun = game_frame;
 var RUNNING = false;
 
 function frame() {
+    if (FLASH >= 0) {
+        FLASH -= 1;
+        document.body.style.background = FLASH_COLOR;
+    } else {
+        document.body.style.background = "#aaaaaa";
+    }
     var result = frame_fun();
     if (result == 0) {
         // no action

@@ -94,7 +94,8 @@ function player_shot_blob(i) {
     }
     // death
     if (BLOBS[i].health < BLOB_DIE_THRESHOLD) {
-        DEATH_FLASH = DEATH_FLASH_DURATION;
+        FLASH = FLASH_DURATION;
+        FLASH_COLOR = "#000";
         BLOBS.splice(i, 1);
     }
 }
