@@ -21,7 +21,7 @@ var BLOB_SIZE = 1;
 var SPEED = 0.05;
 var ANG_SPEED = 0.1;
 
-var BLOB_SPEED = 0.05;
+var BLOB_SPEED = SPEED + 0.01;
 
 var PLAYER_HEALTH = 10000;
 var BLOB_HURT = 0.1;

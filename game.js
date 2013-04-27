@@ -81,6 +81,7 @@ function player_world_at(pos) {
 
 function player_move(pos, dir, dist) {
     var end = move_2d(pos, dir, dist);
+    update_level_canvas(end, 0, 0, 0, 60);
     if (player_world_at(end)) {
         if (! player_world_at([end[0], pos[1]])) {
             return [end[0], pos[1]];
@@ -97,7 +98,7 @@ function update_player_health(blobs) {
         if (blobs[i].dist < BLOB_RANGE) {
             // player was hit
             player.health -= BLOB_HURT;
-            update_level_canvas(player.pos, 255, 0, 0);
+            update_level_canvas(player.pos, 255, 0, 0, 10);
         }
     }
 }

@@ -6,6 +6,16 @@ var world = [
 "           ###                   ",
 "                                 ",
 "                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
+"                                 ",
 "           ################      ",
 "    #      ##############        ",
 "    #        ##                  ",
@@ -103,15 +113,15 @@ for (var y = 0; y < world.length; y++) {
     }
 }
 
-function update_level_canvas(pos, r, g, b)
+function update_level_canvas(pos, r, g, b, factor)
 {
     var x = Math.round(pos[0]);
     var y = Math.round(pos[1]);
     if (y >= 0 && y < CURRENT_CANVAS.length
     &&  x >= 0 && x < CURRENT_CANVAS[y].length) {
-        CURRENT_CANVAS[y][x][0] = Math.round((CURRENT_CANVAS[y][x][0] + r)/2);
-        CURRENT_CANVAS[y][x][1] = Math.round((CURRENT_CANVAS[y][x][1] + g)/2);
-        CURRENT_CANVAS[y][x][2] = Math.round((CURRENT_CANVAS[y][x][2] + b)/2);
+        CURRENT_CANVAS[y][x][0] = Math.round((CURRENT_CANVAS[y][x][0]*factor + r)/(factor+1));
+        CURRENT_CANVAS[y][x][1] = Math.round((CURRENT_CANVAS[y][x][1]*factor + g)/(factor+1));
+        CURRENT_CANVAS[y][x][2] = Math.round((CURRENT_CANVAS[y][x][2]*factor + b)/(factor+1));
     }
 }
 
