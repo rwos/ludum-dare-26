@@ -96,7 +96,7 @@ function player_world_at(pos) {
 
 function player_move(pos, dir, dist) {
     var end = move_2d(pos, dir, dist);
-    update_level_canvas(end, 0, 0, 0, 120);
+    update_level_canvas(end, 0, 0, 0, 1); // XXX DEBUG : 120
     if (player_world_at(end)) {
         if (! player_world_at([end[0], pos[1]])) {
             return [end[0], pos[1]];
@@ -168,7 +168,7 @@ function game_frame() {
     update_screen();
     // XXX TODO: draw HUD
     draw_level_canvas(LEVEL.canvas, [0, 0], true);
-    LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos);
+    LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos + " | " + player.dir);
     if (LEVEL_WON) {
         return 1;
     } else if (LEVEL_LOST) {
