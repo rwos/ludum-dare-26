@@ -3,6 +3,7 @@ var player = {
     pos: [2, 2],
     dir: 1,
     health: PLAYER_HEALTH,
+    shooting: false,
 };
 
 //////////////////// RAYCASTER
@@ -10,6 +11,7 @@ var player = {
 var blobs_seen = [];
 
 function cast_ray(x, dir) {
+// includes blob detection
     var start = player.pos.slice();
     for (var dist = 0; dist < RAY_RANGE; dist += RAY_STEP) {
         var end = move_2d(start, dir, dist);
@@ -51,17 +53,26 @@ function draw_slice(x, dist, type) {
 }
 
 function draw_blobs(blobs) {
+// includes hit trigger (for the "player shot blob" case)
     var z_buf = [];
     for (var i = 0; i < blobs.length; i++) {
         var blob = blobs[i];
         if (typeof z_buf[blob.scr_x] == "undefined"
         ||  z_buf[blob.scr_x] >= blob.dist
         || blob.dist < 0.5) {
+            if (player.shooting
+            &&  blob.scr_x > SHOOT_AREA_LEFT
+            &&  blob.scr_x < SHOOT_AREA_RIGHT) {
+                player_shot_blob(blob.index);
+            }
             z_buf[blob.scr_x] = blob.dist;
             var height = BLOB_HEIGHT / blob.dist;
+            var fill_height = height*blob.health;
             var y_top = (H-height)/2;
             CTX.fillStyle = blob.color;
-            CTX.fillRect(blob.scr_x, y_top, VERT_STEP, height);
+            CTX.fillRect(blob.scr_x, y_top, VERT_STEP, fill_height);
+            CTX.fillStyle = wall_color(blob.dist);
+            CTX.fillRect(blob.scr_x, y_top+fill_height, VERT_STEP, height-fill_height);
         }
     }
 }
@@ -81,7 +92,7 @@ function player_world_at(pos) {
 
 function player_move(pos, dir, dist) {
     var end = move_2d(pos, dir, dist);
-    update_level_canvas(end, 0, 0, 0, 60);
+    update_level_canvas(end, 0, 0, 0, 120);
     if (player_world_at(end)) {
         if (! player_world_at([end[0], pos[1]])) {
             return [end[0], pos[1]];
@@ -106,6 +117,7 @@ function update_player_health(blobs) {
 //////////////////// FRAME
 
 function update_screen() {
+// includes player-hit-by-blob updates (but it shouldn't)
     var FOV_STEP = FOV/W;
     blobs_seen = [];
     for (var x = 0; x < W; x += VERT_STEP) {
@@ -136,9 +148,10 @@ function game_frame() {
     if (KEY[RIGHT]) {
         player.dir += ANG_SPEED;
     }
+    player.shooting = KEY[ord(" ")] ? true : false;
     update_blobs();
     update_screen();
     draw_level_canvas_preview();
-    LOG("health: " + player.health);
+    LOG("health: " + player.health + " --> " + player.shooting);
 }
 

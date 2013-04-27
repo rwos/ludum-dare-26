@@ -27,6 +27,12 @@ var PLAYER_HEALTH = 10000;
 var BLOB_HURT = 0.1;
 var BLOB_RANGE = 2;
 
+var SHOOT_AREA_LEFT = (W/2)-15;
+var SHOOT_AREA_RIGHT = (W/2)+15;
+
+var SHOOT_DAMAGE_FACTOR = 0.99;
+var BLOB_DIE_THRESHOLD = 0.1;
+
 //////////////////// UTILS
 
 function move_2d(pos, dir, dist) {

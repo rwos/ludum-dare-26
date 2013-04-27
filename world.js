@@ -38,18 +38,23 @@ function world_at(pos) {
 //////////////////// BLOBS
 
 var blobs = [
-    {pos: [2, 2], dir: 1, color: "blue"},
-    {pos: [4, 4], dir: 0, color: "green"},
-    {pos: [5, 6], dir: 0, color: "yellow"}
+    {pos: [2, 2], dir: 1, color: "blue", health: 1},
+    {pos: [4, 4], dir: 0, color: "green", health: 1},
+    {pos: [5, 6], dir: 0, color: "yellow", health: 1}
 ];
 
 function blob_at(pos, scr_x, dist) {
     var x = pos[0];
     var y = pos[1];
     for (var i = 0; i < blobs.length; i++) {
-        if (x >= blobs[i].pos[0] && x <= blobs[i].pos[0]+BLOB_SIZE
-        &&  y >= blobs[i].pos[1] && y <= blobs[i].pos[1]+BLOB_SIZE) {
-            return {scr_x: scr_x, color: blob_color(dist, blobs[i].color), dist: dist};
+        var size = BLOB_SIZE;
+        if (x >= blobs[i].pos[0] && x <= blobs[i].pos[0]+size
+        &&  y >= blobs[i].pos[1] && y <= blobs[i].pos[1]+size) {
+            return {index: i,
+                    scr_x: scr_x,
+                    color: blob_color(dist, blobs[i].color),
+                    health: blobs[i].health,
+                    dist: dist};
         }
     }
 }
@@ -99,6 +104,22 @@ function blob_color(dist, rgb) {
         return "rgb(" + d + "," + d + ",255)";
     else // yellow
         return "rgb(255,255," + d + ")";
+}
+
+function player_shot_blob(i) {
+    if (typeof blobs[i] == "undefined")
+        return;
+    blobs[i].health *= SHOOT_DAMAGE_FACTOR;
+    if (blobs[i].color == "green")
+        update_level_canvas(player.pos, 0, 255, 0, 1);
+    else if (blobs[i].color == "blue")
+        update_level_canvas(player.pos, 0, 0, 255, 1);
+    else // yellow
+        update_level_canvas(player.pos, 255, 255, 0, 1);
+    // death
+    if (blobs[i].health < BLOB_DIE_THRESHOLD) {
+        blobs.splice(i, 1);
+    }
 }
 
 //////////////////// LEVEL CANVAS

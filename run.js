@@ -15,7 +15,8 @@ document.onkeydown = function(e) {
     var evt = window.event || e;
     var code = e.keyCode;
     KEY[code] = true;
-    if (code == UP || code == DOWN || code == LEFT || code == RIGHT)
+    if (code == UP || code == DOWN || code == LEFT || code == RIGHT
+    ||  code == ord(" "))
         e.preventDefault();
 }
 document.onkeyup = function(e) {
