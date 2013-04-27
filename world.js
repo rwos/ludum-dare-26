@@ -15,23 +15,17 @@ function world_at(pos) {
 
 //////////////////// BLOBS
 
-var blobs = [
-    {pos: [2, 2], dir: 1, color: "blue", health: 1},
-    {pos: [4, 4], dir: 0, color: "green", health: 1},
-    {pos: [5, 6], dir: 0, color: "yellow", health: 1}
-];
-
 function blob_at(pos, scr_x, dist) {
     var x = pos[0];
     var y = pos[1];
-    for (var i = 0; i < blobs.length; i++) {
+    for (var i = 0; i < BLOBS.length; i++) {
         var size = BLOB_SIZE;
-        if (x >= blobs[i].pos[0] && x <= blobs[i].pos[0]+size
-        &&  y >= blobs[i].pos[1] && y <= blobs[i].pos[1]+size) {
+        if (x >= BLOBS[i].pos[0] && x <= BLOBS[i].pos[0]+size
+        &&  y >= BLOBS[i].pos[1] && y <= BLOBS[i].pos[1]+size) {
             return {index: i,
                     scr_x: scr_x,
-                    color: blob_color(dist, blobs[i].color),
-                    health: blobs[i].health,
+                    color: blob_color(dist, BLOBS[i].color),
+                    health: BLOBS[i].health,
                     dist: dist};
         }
     }
@@ -69,29 +63,29 @@ function move_blob(b) {
 }
 
 function update_blobs() {
-    for (var i = 0; i < blobs.length; i++) {
-        move_blob(blobs[i]);
+    for (var i = 0; i < BLOBS.length; i++) {
+        move_blob(BLOBS[i]);
     }
 }
 
 function blob_color(dist, rgb) {
     var d = Math.round(MAX_COLOR * (dist/RAY_RANGE));
     if (rgb == "green")
-        return "rgb(" + d + ",255," + d + ")";
+        return "rgb(" + d + "," + MAX_COLOR + "," + d + ")";
     else if (rgb == "blue")
-        return "rgb(" + d + "," + d + ",255)";
+        return "rgb(" + d + "," + d + "," + MAX_COLOR + ")";
     else // yellow
-        return "rgb(255,255," + d + ")";
+        return "rgb(" + MAX_COLOR + "," + MAX_COLOR + "," + d + ")";
 }
 
 function player_shot_blob(i) {
-    if (typeof blobs[i] == "undefined")
+    if (typeof BLOBS[i] == "undefined")
         return;
-    blobs[i].health *= SHOOT_DAMAGE_FACTOR;
-    if (blobs[i].color == "green") {
+    BLOBS[i].health *= SHOOT_DAMAGE_FACTOR;
+    if (BLOBS[i].color == "green") {
         update_level_canvas(player.pos, 0, 255, 0, 1);
         document.body.style.background = "#aaddaa";
-    } else if (blobs[i].color == "blue") {
+    } else if (BLOBS[i].color == "blue") {
         update_level_canvas(player.pos, 0, 0, 255, 1);
         document.body.style.background = "#aaaadd";
     } else { // yellow
@@ -99,9 +93,9 @@ function player_shot_blob(i) {
         document.body.style.background = "#ddddaa";
     }
     // death
-    if (blobs[i].health < BLOB_DIE_THRESHOLD) {
+    if (BLOBS[i].health < BLOB_DIE_THRESHOLD) {
         DEATH_FLASH = DEATH_FLASH_DURATION;
-        blobs.splice(i, 1);
+        BLOBS.splice(i, 1);
     }
 }
 
