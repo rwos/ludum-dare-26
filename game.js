@@ -1,7 +1,11 @@
+
 var player = {
     pos: [2, 2],
-    dir: 1
+    dir: 1,
+    health: PLAYER_HEALTH,
 };
+
+//////////////////// RAYCASTER
 
 var blobs_seen = [];
 
@@ -51,7 +55,8 @@ function draw_blobs(blobs) {
     for (var i = 0; i < blobs.length; i++) {
         var blob = blobs[i];
         if (typeof z_buf[blob.scr_x] == "undefined"
-        ||  z_buf[blob.scr_x] >= blob.dist) {
+        ||  z_buf[blob.scr_x] >= blob.dist
+        || blob.dist < 0.5) {
             z_buf[blob.scr_x] = blob.dist;
             var height = BLOB_HEIGHT / blob.dist;
             var y_top = (H-height)/2;
@@ -87,6 +92,16 @@ function player_move(pos, dir, dist) {
     return end;
 }
 
+function update_player_health(blobs) {
+    for (var i = 0; i < blobs.length; i++) {
+        if (blobs[i].dist < BLOB_RANGE) {
+            // player was hit
+            player.health -= BLOB_HURT;
+            update_level_canvas(player.pos, 255, 0, 0);
+        }
+    }
+}
+
 //////////////////// FRAME
 
 function update_screen() {
@@ -98,6 +113,7 @@ function update_screen() {
         draw_slice(x, hit.dist, hit.type);
     }
     draw_blobs(blobs_seen);
+    update_player_health(blobs_seen);
 }
 
 function game_frame() {
@@ -121,5 +137,7 @@ function game_frame() {
     }
     update_blobs();
     update_screen();
+    draw_level_canvas_preview();
+    LOG("health: " + player.health);
 }
 

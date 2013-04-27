@@ -23,6 +23,10 @@ var ANG_SPEED = 0.1;
 
 var BLOB_SPEED = 0.05;
 
+var PLAYER_HEALTH = 10000;
+var BLOB_HURT = 0.1;
+var BLOB_RANGE = 2;
+
 //////////////////// UTILS
 
 function move_2d(pos, dir, dist) {
