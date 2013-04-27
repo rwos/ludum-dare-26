@@ -4,11 +4,11 @@ var levels = [
         start: [0,1],
         dir: Math.PI/2,
         map: [
-            "             #",
+            "   #         #",
             "             X",
             "             X",
             "             #",
-        ],
+        ].reverse(),
         canvas_pos: [0, 0],
         blobs: [
         ],
@@ -25,7 +25,7 @@ var levels = [
             "#  #  #  #  ##",
             "             #",
             "             #",
-        ],
+        ].reverse(),
         canvas_pos: [12, 0],
         blobs: [
             {pos: [1.5, 5.7], dir: 1, color: "blue", health: 1},
@@ -46,7 +46,7 @@ var levels = [
             "#  #  #  #  ##",
             "             #",
             "             #",
-        ],
+        ].reverse(),
         canvas_pos: [24, 0],
         blobs: [
             {pos: [5.6, 8.4], dir: 1, color: "blue", health: 1},

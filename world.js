@@ -108,7 +108,7 @@ function draw_level_canvas(canvas, pos, border) {
     var cy = pos[1];
     for (var y = 0; y < canvas.length; y++) {
         for (var x = 0; x < canvas[y].length; x++) {
-            var c = canvas[y][x];
+            var c = canvas[canvas.length - y - 1][x];
             CTX.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
             CTX.fillRect((cx+x)*CANVAS_PX_SIZE, (cy+y)*CANVAS_PX_SIZE,
                          CANVAS_PX_SIZE, CANVAS_PX_SIZE);

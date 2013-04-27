@@ -16,7 +16,7 @@ var RAY_RANGE = 20;
 var RAY_STEP = 0.1;
 var WALL_HEIGHT = 700;
 var BLOB_HEIGHT = 400;
-var BLOB_SIZE = 1;
+var BLOB_SIZE = 0.5;
 
 var SPEED = 0.05;
 var ANG_SPEED = 0.05;
