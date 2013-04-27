@@ -1,11 +1,4 @@
 
-var player = {
-    pos: LEVEL.start.slice(),
-    dir: LEVEL.dir,
-    health: PLAYER_HEALTH,
-    shooting: false,
-};
-
 //////////////////// RAYCASTER
 
 var blobs_seen = [];
@@ -40,7 +33,7 @@ function draw_slice(x, dist, type) {
     var height = WALL_HEIGHT/dist;
     if (dist == 0)
         height = H;
-    var y_top = (H-height)/2+WALL_Y_OFF;
+    var y_top = (H-height)/2+WALL_Y_OFF+player.height;
     CTX.fillStyle = "#ddd";
     CTX.fillRect(x, 0, VERT_STEP, H);
     if (type == "X") {
@@ -97,6 +90,7 @@ function player_world_at(pos) {
 }
 
 function player_move(pos, dir, dist) {
+    player.cycle += 1;
     var end = move_2d(pos, dir, dist);
     update_level_canvas(end, 0, 0, 0, 1); // XXX DEBUG : 120
     if (player_world_at(end)) {
@@ -162,10 +156,20 @@ function game_frame() {
     if (KEY[ord(" ")]) {
         player.shooting = true;
         // jitter
-        player.dir += (Math.random()-0.5)/50;
+        player.dir += (Math.random()-0.5)/25;
         player.pos = player_move(player.pos, player.dir+Math.PI/2, (Math.random()-0.5)/50);
+        player.height += (Math.random()-0.5)*5;
     } else {
         player.shooting = false;
+        if (KEY[UP] || KEY[ord("W")]
+        ||  KEY[DOWN] || KEY[ord("S")]
+        ||  KEY[ord("A")] || KEY[ord("D")]) {
+            // player walking
+            player.height = Math.abs(Math.sin(player.cycle/5)) * 10;
+        } else {
+            // player not walking or shooting
+            player.height = 0;
+        }
     }
     update_blobs();
     update_screen();

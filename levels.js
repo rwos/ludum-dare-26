@@ -353,6 +353,8 @@ function switch_to_level(n) {
         dir: LEVEL.dir,
         health: PLAYER_HEALTH,
         shooting: false,
+        cycle: 0,
+        height: 0,
     };
 }
 
