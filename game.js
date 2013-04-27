@@ -167,7 +167,8 @@ function game_frame() {
     update_blobs();
     update_screen();
     // XXX TODO: draw HUD
-    draw_level_canvas(LEVEL.canvas, [0, 0], true);
+    draw_level_canvas(LEVEL.canvas, [0, 0]);
+    draw_level_canvas_border(LEVEL.canvas, [0, 0]);
     LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos + " | " + player.dir);
     if (LEVEL_WON) {
         return 1;

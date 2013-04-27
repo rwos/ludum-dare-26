@@ -103,7 +103,7 @@ function player_shot_blob(i) {
 
 var CANVAS_PX_SIZE = 4;
 
-function draw_level_canvas(canvas, pos, border) {
+function draw_level_canvas(canvas, pos) {
     var cx = pos[0];
     var cy = pos[1];
     for (var y = 0; y < canvas.length; y++) {
@@ -114,17 +114,18 @@ function draw_level_canvas(canvas, pos, border) {
                          CANVAS_PX_SIZE, CANVAS_PX_SIZE);
         }
     }
-    if (border) {
-        CTX.beginPath();
-        CTX.rect(cx*CANVAS_PX_SIZE, cy*CANVAS_PX_SIZE,
-                 canvas[0].length*CANVAS_PX_SIZE,
-                 canvas.length*CANVAS_PX_SIZE);
-        CTX.lineWidth = CANVAS_PX_SIZE;
-        CTX.strokeStyle = "#333";
-        CTX.stroke();
-    }
 }
-
+function draw_level_canvas_border(canvas, pos) {
+    var cx = pos[0];
+    var cy = pos[1];
+    CTX.beginPath();
+    CTX.rect(cx*CANVAS_PX_SIZE, cy*CANVAS_PX_SIZE,
+             canvas[0].length*CANVAS_PX_SIZE,
+             canvas.length*CANVAS_PX_SIZE);
+    CTX.lineWidth = CANVAS_PX_SIZE;
+    CTX.strokeStyle = "#333";
+    CTX.stroke();
+}
 
 function update_level_canvas(pos, r, g, b, factor)
 {

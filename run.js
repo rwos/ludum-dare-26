@@ -32,7 +32,13 @@ function display_level_selector() {
         var lvl = levels[i];
         draw_level_canvas(lvl.canvas,
                 [10 + lvl.canvas_pos[0],
-                 10 + lvl.canvas_pos[1]], false);
+                 10 + lvl.canvas_pos[1]]);
+    }
+    if (CURRENT_LEVEL < levels.length -1) {
+        var bordered = levels[CURRENT_LEVEL+1];
+        draw_level_canvas_border(bordered.canvas,
+            [10 + bordered.canvas_pos[0],
+             10 + bordered.canvas_pos[1]]);
     }
 }
 
