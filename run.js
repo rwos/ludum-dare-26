@@ -108,6 +108,20 @@ function frame() {
     } else if (result == -1) {
         // level lost -> try again
     }
+    // overlay
+    var ol = CTX.createLinearGradient(0, 0, W, 0);
+    if (player.shooting) {
+        ol.addColorStop(0,   "rgba(0, 0, 0, 0.5)");
+        ol.addColorStop(1,   "rgba(0, 0, 0, 0.5)");
+        ol.addColorStop(0.5, "rgba(0, 0, 0, 0)");
+    } else {
+        ol.addColorStop(0.01, "rgba(0, 0, 0, 0)");
+        ol.addColorStop(0.99, "rgba(0, 0, 0, 0)");
+        ol.addColorStop(0,   "rgba(0, 0, 0, 0.05)");
+        ol.addColorStop(1,   "rgba(0, 0, 0, 0.05)");
+    }
+    CTX.fillStyle = ol;
+    CTX.fillRect(0, 0, W, H);
     RUNNING = setTimeout(frame, TIMEOUT);
 }
 RUNNING = setTimeout(frame, TIMEOUT);

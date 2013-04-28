@@ -124,7 +124,6 @@ function update_player_health(blobs) {
 
 function update_hud() {
     draw_level_canvas(LEVEL.canvas, [0, 0]);
-    //draw_level_canvas_border(LEVEL.canvas, [0, 0]);
     CTX.font = "30px Arial,Helvetica,sans-serif";
     CTX.textAlign = "center";
     CTX.fillStyle = "#333";
@@ -170,7 +169,7 @@ function game_frame() {
     if (KEY[RIGHT]) {
         player.dir += ANG_SPEED;
     }
-    if (KEY[ord(" ")]) {
+    if (KEY[ord(" ")] && player.cycle > 1) {
         player.shooting = true;
         // jitter
         player.dir += (Math.random()-0.5)/25;
