@@ -25,8 +25,8 @@ var ANG_SPEED = 0.05;
 
 var BLOB_SPEED = 0.06;
 
-var PLAYER_HEALTH = 10000;
-var BLOB_HURT = 0.1;
+var PLAYER_HEALTH = 19682; // 3^9 - 1
+var BLOB_HURT = 0.5;
 var BLOB_RANGE = 3;
 
 var SHOOT_AREA_LEFT = (W/2)-15;

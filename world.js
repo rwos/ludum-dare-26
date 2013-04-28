@@ -117,15 +117,16 @@ function draw_level_canvas(canvas, pos) {
         }
     }
 }
-function draw_level_canvas_border(canvas, pos) {
+function draw_level_canvas_border(canvas, pos, color) {
     var cx = pos[0];
     var cy = pos[1];
     CTX.beginPath();
-    CTX.rect(cx*CANVAS_PX_SIZE, cy*CANVAS_PX_SIZE,
-             canvas[0].length*CANVAS_PX_SIZE,
-             canvas.length*CANVAS_PX_SIZE);
+    CTX.rect(cx*CANVAS_PX_SIZE - CANVAS_PX_SIZE/2,
+             cy*CANVAS_PX_SIZE - CANVAS_PX_SIZE/2,
+             canvas[0].length*CANVAS_PX_SIZE + CANVAS_PX_SIZE,
+             canvas.length*CANVAS_PX_SIZE    + CANVAS_PX_SIZE);
     CTX.lineWidth = CANVAS_PX_SIZE;
-    CTX.strokeStyle = "#333";
+    CTX.strokeStyle = color;
     CTX.stroke();
 }
 

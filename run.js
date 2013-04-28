@@ -27,6 +27,8 @@ document.onkeyup = function(e) {
 
 //////////////////// MENU
 
+var color_cycle = 0;
+
 function display_level_selector() {
     var xoff = 40;
     var yoff = 35;
@@ -38,10 +40,19 @@ function display_level_selector() {
     }
     if (CURRENT_LEVEL < levels.length -1) {
         var bordered = levels[CURRENT_LEVEL+1];
+        var color = "#3f3";
+        if (Math.round(color_cycle) == 0) {
+            color = "#ff3";
+        } else if (Math.round(color_cycle) == 2) {
+            color = "#33f";
+        }
         draw_level_canvas_border(bordered.canvas,
             [xoff + bordered.canvas_pos[0],
-             yoff + bordered.canvas_pos[1]]);
+             yoff + bordered.canvas_pos[1]],
+             color);
     }
+    color_cycle += 0.06;
+    if (color_cycle > 2) color_cycle = 0;
 }
 
 function display_message(y, s) {
@@ -56,7 +67,7 @@ function level_won_frame() {
     CTX.fillRect(0, 0, W, H);
     // border
     CTX.fillStyle = "#333";
-    CTX.fillRect(154, 132, 332, 242);
+    CTX.fillRect(156, 136, 328, 236);
     display_level_selector();
     display_message(80, "You won!");
     display_message(430, "press space");
