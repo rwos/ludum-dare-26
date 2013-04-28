@@ -19,7 +19,7 @@
                 text-decoration: none;
             }
             a:hover {
-                text-decoration: line-through;
+                text-decoration: underline;
             }
             canvas {
                 display: block;
@@ -36,6 +36,18 @@
                 margin: 0 auto;
             }
             #header { font-size: 15px; }
+            #msg {
+                display:none;
+                border-radius: 5px;
+                padding: 10px;
+                background: #447744;
+                color: white;
+                font-size: 20px;
+            }
+            #msg a {
+                text-decoration: underline;
+                color: white;
+            }
         </style>
     </head>
     <body>
@@ -43,6 +55,10 @@
         <div id="header">
             <b>WASD</b> (strafe) + <b>cursor keys</b> (rotate) |
             shoot with <b>space</b> | start level: <b>enter</b>
+            <div id="msg">
+                You finished the game!
+                <a id="img-link" target="_new">Open your map as a PNG image.</a>
+            </div>
         </div>
         <canvas id="canvas" width="640" height="480"></canvas>
         <script src="global.js"></script>

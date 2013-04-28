@@ -85,8 +85,14 @@ function menu_frame() {
     CTX.fillRect(156, 136, 328, 236);
     display_level_selector();
     if (LEVEL_WON) {
-        display_message(80, "You won!");
-        display_message(430, "You go on!");
+        if (CURRENT_LEVEL < 12) {
+            display_message(80, "You won!");
+            display_message(430, "You go on!");
+        } else {
+            display_message(80, "px");
+            document.getElementById("msg").style.cssText = "display:block";
+            document.getElementById("img-link").href = C.toDataURL();
+        }
     } else if (LEVEL_LOST) {
         display_message(80, "You lost!");
         display_message(430, "You try again!");
@@ -94,7 +100,7 @@ function menu_frame() {
         display_message(80, "You hello!");
         display_message(430, "You start!");
     }
-    if (KEY[ENTER]) {
+    if (KEY[ENTER] && CURRENT_LEVEL < 12) {
         switch_to_level(CURRENT_LEVEL);
         SND_UP.play();
         return 1;
