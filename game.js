@@ -120,6 +120,18 @@ function update_player_health(blobs) {
     }
 }
 
+//////////////////// HUD
+
+function update_hud() {
+    draw_level_canvas(LEVEL.canvas, [0, 0]);
+    //draw_level_canvas_border(LEVEL.canvas, [0, 0]);
+    CTX.font = "30px Arial,Helvetica,sans-serif";
+    CTX.textAlign = "center";
+    CTX.fillStyle = "#333";
+    CTX.fillText(to_tri_str(Math.round(player.health)), W/2, 30);
+    LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos + " | " + player.dir);
+}
+
 //////////////////// FRAME
 
 function update_screen() {
@@ -178,10 +190,7 @@ function game_frame() {
     }
     update_blobs();
     update_screen();
-    // XXX TODO: draw HUD
-    draw_level_canvas(LEVEL.canvas, [0, 0]);
-    draw_level_canvas_border(LEVEL.canvas, [0, 0]);
-    LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos + " | " + player.dir);
+    update_hud();
     if (LEVEL_WON) {
         return 1;
     } else if (LEVEL_LOST) {

@@ -44,29 +44,11 @@ function display_level_selector() {
     }
 }
 
-function display_message(s) {
-    CTX.font = "25px Arial,Helvetica,sans-serif";
+function display_message(y, s) {
+    CTX.font = "30px Arial,Helvetica,sans-serif";
     CTX.textAlign = "center";
     CTX.fillStyle = "#333";
-    var enc = "";
-    for (var i = 0; i < s.length; i++) {
-        //enc += String.fromCharCode(ord(s[i])+2);
-        if (s[i] == " ") {
-            enc += ":";
-        } else {
-            var num = ord(s[i]).toString(3);
-            for (var j = 0; j < num.length; j++) {
-                if (num[j] == "0") {
-                    enc += ".";
-                } else if (num[j] == "1") {
-                    enc += "/";
-                } else {
-                    enc += "|";
-                }
-            }
-        }
-    }
-    CTX.fillText(enc, W/2, 80);
+    CTX.fillText(enc_msg(s), W/2, y);
 }
 
 function level_won_frame() {
@@ -76,7 +58,8 @@ function level_won_frame() {
     CTX.fillStyle = "#333";
     CTX.fillRect(154, 132, 332, 242);
     display_level_selector();
-    display_message("You won!");
+    display_message(80, "You won!");
+    display_message(430, "press space");
     if (KEY[ord(" ")]) {
         switch_to_level(CURRENT_LEVEL+1);
         return 1;

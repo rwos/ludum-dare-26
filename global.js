@@ -50,3 +50,31 @@ function move_2d(pos, dir, dist) {
     ];
 }
 
+function to_tri_str(n) {
+    var num = n.toString(3);
+    var out = "";
+    for (var j = 0; j < num.length; j++) {
+        if (num[j] == "0") {
+            out += ".";
+        } else if (num[j] == "1") {
+            out += ":";
+        } else {
+            out += "|";
+        }
+    }
+    return out;
+}
+
+function enc_msg(s) {
+    var enc = "";
+    for (var i = 0; i < s.length; i++) {
+        //enc += String.fromCharCode(ord(s[i])+2);
+        if (s[i] == " ") {
+            enc += " ";
+        } else {
+            enc += to_tri_str(ord(s[i]));
+        }
+    }
+    return enc;
+}
+
