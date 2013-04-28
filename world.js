@@ -82,14 +82,15 @@ function player_shot_blob(i) {
     if (typeof BLOBS[i] == "undefined")
         return;
     BLOBS[i].health *= SHOOT_DAMAGE_FACTOR;
+    var pos = BLOBS[i].pos;
     if (BLOBS[i].color == "green") {
-        update_level_canvas(player.pos, 0, 255, 0, 1);
+        update_level_canvas(pos, 0, 255, 0, 1);
         document.body.style.background = "#aaddaa";
     } else if (BLOBS[i].color == "blue") {
-        update_level_canvas(player.pos, 0, 0, 255, 1);
+        update_level_canvas(pos, 0, 0, 255, 1);
         document.body.style.background = "#aaaadd";
     } else { // yellow
-        update_level_canvas(player.pos, 255, 255, 0, 1);
+        update_level_canvas(pos, 255, 255, 0, 1);
         document.body.style.background = "#ddddaa";
     }
     // death
