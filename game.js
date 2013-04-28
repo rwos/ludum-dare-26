@@ -34,7 +34,12 @@ function draw_slice(x, dist, type) {
     if (dist == 0)
         height = H;
     var y_top = (H-height)/2+WALL_Y_OFF+player.height;
-    CTX.fillStyle = "#ddd";
+    var bg = CTX.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, "#fff");
+    bg.addColorStop(0.4, "#ddd");
+    bg.addColorStop(0.6, "#ddd");
+    bg.addColorStop(1, "#aaa");
+    CTX.fillStyle = bg;
     CTX.fillRect(x, 0, VERT_STEP, H);
     if (type == "X") {
         CTX.fillStyle = goal_color(dist);
