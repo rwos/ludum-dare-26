@@ -75,7 +75,7 @@ function draw_blobs(blobs) {
             z_buf[blob.scr_x] = blob.dist;
             var height = BLOB_HEIGHT / blob.dist;
             var fill_height = height-height*blob.health;
-            var y_top = (H-height)/2 + 20;
+            var y_top = (H-height)/2 + 20 + player.height;
             CTX.fillStyle = wall_color(blob.dist);
             CTX.fillRect(blob.scr_x, y_top, VERT_STEP, fill_height);
             CTX.fillStyle = blob.color;

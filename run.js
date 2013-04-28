@@ -71,12 +71,14 @@ function menu_frame() {
     display_level_selector();
     if (LEVEL_WON) {
         display_message(80, "You won!");
+        display_message(430, "You go on!");
     } else if (LEVEL_LOST) {
         display_message(80, "You lost!");
+        display_message(430, "You try again!");
     } else {
-        display_message(80, "Welcome!");
+        display_message(80, "You hello!");
+        display_message(430, "You start!");
     }
-    display_message(430, "press space");
     if (KEY[ord(" ")]) {
         switch_to_level(CURRENT_LEVEL);
         return 1;
