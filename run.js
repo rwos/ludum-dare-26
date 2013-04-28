@@ -29,6 +29,7 @@ document.onkeyup = function(e) {
 //////////////////// MENU
 
 var color_cycle = 0;
+var sound_cycle = 1;
 
 function display_level_selector() {
     var xoff = 40;
@@ -51,6 +52,11 @@ function display_level_selector() {
             [xoff + bordered.canvas_pos[0],
              yoff + bordered.canvas_pos[1]],
              color);
+    }
+    sound_cycle += 0.03;
+    if (sound_cycle > 1) {
+        sound_cycle = 0;
+        SND_BLING.play();
     }
     color_cycle += 0.06;
     if (color_cycle > 2) color_cycle = 0;
@@ -90,10 +96,24 @@ function menu_frame() {
     }
     if (KEY[ENTER]) {
         switch_to_level(CURRENT_LEVEL);
+        SND_UP.play();
         return 1;
     }
     return 0;
 }
+
+//////////////////// SOUND
+
+var SND_BG = new Audio("snd/bg.wav");
+var SND_BG2 = new Audio("snd/bg2.wav");
+var SND_BLING = new Audio("snd/bling.wav");
+var SND_UP = new Audio("snd/up.wav");
+var SND_UP2 = new Audio("snd/up2.wav");
+var SND_GUN = new Audio("snd/machine_gun.wav");
+var SND_HURT = new Audio("snd/hurt.wav");
+var SND_PLAYER_DEATH = new Audio("snd/down.wav");
+var SND_BLOB_HIT = new Audio("snd/machine_gun_hit.wav");
+var SND_BLOB_DEATH = new Audio("snd/blob_death.wav");
 
 //////////////////// FRAME
 

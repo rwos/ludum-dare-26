@@ -93,11 +93,13 @@ function player_shot_blob(i) {
         update_level_canvas(pos, 255, 255, 0, 1);
         document.body.style.background = "#ddddaa";
     }
+    SND_BLOB_HIT.play();
     // death
     if (BLOBS[i].health < BLOB_DIE_THRESHOLD) {
         FLASH = FLASH_DURATION;
         FLASH_COLOR = "#000";
         BLOBS.splice(i, 1);
+        SND_BLOB_DEATH.play();
     }
 }
 

@@ -97,6 +97,7 @@ function player_world_at(pos) {
         FLASH = FLASH_DURATION;
         FLASH_COLOR = "#fff";
         player.shooting = false;
+        SND_UP2.play();
         level_won();
         return false;
     }
@@ -129,10 +130,12 @@ function update_player_health(blobs) {
             player.health -= BLOB_HURT;
             update_level_canvas(player.pos, 255, 0, 0, 10);
             document.body.style.background = "#ffaaaa";
+            SND_HURT.play();
             if (player.health <= 0) {
                 FLASH = FLASH_DURATION;
                 FLASH_COLOR = "#f00";
                 player.shooting = false;
+                SND_PLAYER_DEATH.play();
                 level_lost();
             }
         }
@@ -190,6 +193,7 @@ function game_frame() {
         player.dir += ANG_SPEED;
     }
     if (KEY[ord(" ")]) {
+        SND_GUN.play();
         player.shooting = true;
         // jitter
         player.dir += (Math.random()-0.5)/25;
@@ -206,6 +210,11 @@ function game_frame() {
             // player not walking or shooting
             player.height = 0;
         }
+    }
+    if (LEVEL.blobs.length > 0) {
+        SND_BG.play();
+    } else {
+        SND_BG2.play();
     }
     update_blobs();
     update_screen();
