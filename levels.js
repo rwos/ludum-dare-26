@@ -5,8 +5,8 @@ var levels = [
         dir: Math.PI/2,
         map: [
             "       #     #",
-            "       #     X",
-            "             X",
+            "            XX",
+            "            XX",
             "             #",
         ].reverse(),
         canvas_pos: [0, 0],
