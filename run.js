@@ -28,24 +28,55 @@ document.onkeyup = function(e) {
 //////////////////// MENU
 
 function display_level_selector() {
+    var xoff = 40;
+    var yoff = 35;
     for (var i = 0; i < levels.length; i++) {
         var lvl = levels[i];
         draw_level_canvas(lvl.canvas,
-                [10 + lvl.canvas_pos[0],
-                 10 + lvl.canvas_pos[1]]);
+                [xoff + lvl.canvas_pos[0],
+                 yoff + lvl.canvas_pos[1]]);
     }
     if (CURRENT_LEVEL < levels.length -1) {
         var bordered = levels[CURRENT_LEVEL+1];
         draw_level_canvas_border(bordered.canvas,
-            [10 + bordered.canvas_pos[0],
-             10 + bordered.canvas_pos[1]]);
+            [xoff + bordered.canvas_pos[0],
+             yoff + bordered.canvas_pos[1]]);
     }
+}
+
+function display_message(s) {
+    CTX.font = "25px Arial,Helvetica,sans-serif";
+    CTX.textAlign = "center";
+    CTX.fillStyle = "#333";
+    var enc = "";
+    for (var i = 0; i < s.length; i++) {
+        //enc += String.fromCharCode(ord(s[i])+2);
+        if (s[i] == " ") {
+            enc += ":";
+        } else {
+            var num = ord(s[i]).toString(3);
+            for (var j = 0; j < num.length; j++) {
+                if (num[j] == "0") {
+                    enc += ".";
+                } else if (num[j] == "1") {
+                    enc += "/";
+                } else {
+                    enc += "|";
+                }
+            }
+        }
+    }
+    CTX.fillText(enc, W/2, 80);
 }
 
 function level_won_frame() {
     CTX.fillStyle = "#ddd";
     CTX.fillRect(0, 0, W, H);
+    // border
+    CTX.fillStyle = "#333";
+    CTX.fillRect(154, 132, 332, 242);
     display_level_selector();
+    display_message("You won!");
     if (KEY[ord(" ")]) {
         switch_to_level(CURRENT_LEVEL+1);
         return 1;
