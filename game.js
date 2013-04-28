@@ -34,19 +34,29 @@ function draw_slice(x, dist, type) {
     if (dist == 0)
         height = H;
     var y_top = (H-height)/2+WALL_Y_OFF+player.height;
+    var health_percentage = player.health/PLAYER_HEALTH;
+    var hfac = Math.random()*(1-health_percentage)*height;
     var bg = CTX.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, "#fff");
-    bg.addColorStop(0.4, "#ddd");
-    bg.addColorStop(0.6, "#ddd");
-    bg.addColorStop(1, "#aaa");
+    var blur = health_percentage - 0.3;
+    if (blur < 0.05) blur = 0.05;
+    //bg.addColorStop(0, "#fff");
+    //bg.addColorStop(0.4, "#ddd");
+    //bg.addColorStop(0.6, "#ddd");
+    //bg.addColorStop(1, "#aaa");
+    bg.addColorStop(0, "rgba(255, 255, 255, " + blur + ")");
+    bg.addColorStop(0.4, "rgba(221, 221, 221, " + blur + ")");
+    bg.addColorStop(0.6, "rgba(221, 221, 221, " + blur + ")");
+    bg.addColorStop(1, "rgba(170, 170, 170, " + blur + ")");
     CTX.fillStyle = bg;
     CTX.fillRect(x, 0, VERT_STEP, H);
-    if (type == "X") {
-        CTX.fillStyle = goal_color(dist);
-    } else {
-        CTX.fillStyle = wall_color(dist);
+    if (Math.random() <= health_percentage + 0.5) {
+        if (type == "X") {
+            CTX.fillStyle = goal_color(dist);
+        } else {
+            CTX.fillStyle = wall_color(dist);
+        }
+        CTX.fillRect(x, y_top+hfac, VERT_STEP, height);
     }
-    CTX.fillRect(x, y_top, VERT_STEP, height);
 }
 
 function draw_blobs(blobs) {
@@ -116,6 +126,11 @@ function update_player_health(blobs) {
             player.health -= BLOB_HURT;
             update_level_canvas(player.pos, 255, 0, 0, 10);
             document.body.style.background = "#ffaaaa";
+            if (player.health <= 0) {
+                FLASH = FLASH_DURATION;
+                FLASH_COLOR = "#f00";
+                level_lost();
+            }
         }
     }
 }
@@ -149,6 +164,7 @@ function update_screen() {
 var LEVEL_WON = false;
 var LEVEL_LOST = false;
 function level_won() {LEVEL_WON = true;}
+function level_lost() {LEVEL_LOST = true;}
 
 function game_frame() {
     if (KEY[UP] || KEY[ord("W")]) {
@@ -191,6 +207,7 @@ function game_frame() {
     update_screen();
     update_hud();
     if (LEVEL_WON) {
+        CURRENT_LEVEL += 1;
         return 1;
     } else if (LEVEL_LOST) {
         return -1;

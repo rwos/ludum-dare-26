@@ -38,8 +38,8 @@ function display_level_selector() {
                 [xoff + lvl.canvas_pos[0],
                  yoff + lvl.canvas_pos[1]]);
     }
-    if (CURRENT_LEVEL < levels.length -1) {
-        var bordered = levels[CURRENT_LEVEL+1];
+    if (CURRENT_LEVEL < levels.length) {
+        var bordered = levels[CURRENT_LEVEL];
         var color = "#3f3";
         if (Math.round(color_cycle) == 0) {
             color = "#ff3";
@@ -62,17 +62,23 @@ function display_message(y, s) {
     CTX.fillText(enc_msg(s), W/2, y);
 }
 
-function level_won_frame() {
+function menu_frame() {
     CTX.fillStyle = "#ddd";
     CTX.fillRect(0, 0, W, H);
     // border
     CTX.fillStyle = "#333";
     CTX.fillRect(156, 136, 328, 236);
     display_level_selector();
-    display_message(80, "You won!");
+    if (LEVEL_WON) {
+        display_message(80, "You won!");
+    } else if (LEVEL_LOST) {
+        display_message(80, "You lost!");
+    } else {
+        display_message(80, "Welcome!");
+    }
     display_message(430, "press space");
     if (KEY[ord(" ")]) {
-        switch_to_level(CURRENT_LEVEL+1);
+        switch_to_level(CURRENT_LEVEL);
         return 1;
     }
     return 0;
@@ -81,10 +87,9 @@ function level_won_frame() {
 //////////////////// FRAME
 
 var current_frame_fun = 0;
-var frame_funs = [game_frame,
-                level_won_frame];
-
-var frame_fun = game_frame;
+var frame_funs = [menu_frame,
+                  game_frame]
+var frame_fun = frame_funs[current_frame_fun];
 
 var RUNNING = false;
 
@@ -107,6 +112,11 @@ function frame() {
         frame_fun = frame_funs[current_frame_fun];
     } else if (result == -1) {
         // level lost -> try again
+        current_frame_fun += 1;
+        if (current_frame_fun >= frame_funs.length) {
+            current_frame_fun = 0;
+        }
+        frame_fun = frame_funs[current_frame_fun];
     }
     // overlay
     var ol = CTX.createLinearGradient(0, 0, W, 0);
