@@ -190,7 +190,7 @@ function game_frame() {
         // jitter
         player.dir += (Math.random()-0.5)/25;
         player.pos = player_move(player.pos, player.dir+Math.PI/2, (Math.random()-0.5)/50);
-        player.height += (Math.random()-0.5)*5;
+        player.height += (Math.random()-0.5)*10;
     } else {
         player.shooting = false;
         if (KEY[UP] || KEY[ord("W")]
