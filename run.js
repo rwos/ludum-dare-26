@@ -131,6 +131,9 @@ var frame_fun = frame_funs[current_frame_fun];
 var RUNNING = false;
 
 function frame() {
+    var frame_start = (new Date()).getTime();
+    clearTimeout(RUNNING);
+
     if (FLASH >= 0) {
         FLASH -= 1;
         document.body.style.background = FLASH_COLOR;
@@ -169,7 +172,24 @@ function frame() {
     }
     CTX.fillStyle = ol;
     CTX.fillRect(0, 0, W, H);
-    RUNNING = setTimeout(frame, TIMEOUT);
+
+    // frame rate limiter
+    var frame_time = (new Date()).getTime() - frame_start;
+    if (frame_time >= TARGET_FRAME_TIME) {
+        //LOG("XXX: " + frame_time + " (" + TARGET_FRAME_TIME + ")");
+        RUNNING = setTimeout(frame, 1);
+    } else {
+        //LOG(">>>: " + frame_time + " (" + TARGET_FRAME_TIME + ")");
+        RUNNING = setTimeout(frame, TARGET_FRAME_TIME-frame_time);
+    }
 }
-RUNNING = setTimeout(frame, TIMEOUT);
+RUNNING = setTimeout(frame, 1);
+
+//////////////////// STUPIDITY
+
+// chrome and opera perform fine on my machine here,
+// FF 10 is too slow
+if ((! window.chrome) && (! window.opera)) {
+    document.getElementById("warning").style.cssText = "display:block";
+}
 

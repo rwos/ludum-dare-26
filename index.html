@@ -24,7 +24,7 @@
             canvas {
                 display: block;
                 margin: 0 auto;
-                margin-top: 2em;
+                margin-top: 10px;
                 max-width: 640px;
                 border-radius: 5px;
                 box-shadow: 0 0 10px 2px #777;
@@ -40,6 +40,7 @@
                 display:none;
                 border-radius: 5px;
                 padding: 10px;
+                margin: 10px;
                 background: #447744;
                 color: white;
                 font-size: 20px;
@@ -48,11 +49,23 @@
                 text-decoration: underline;
                 color: white;
             }
+            #warning {
+                display: none;
+                border-radius: 5px;
+                padding: 10px;
+                margin: 10px;
+                font-size: 10px;
+                border: 2px solid #333;
+            }
+            #debug {display:none;}
         </style>
     </head>
     <body>
         <div id="debug"></div>
         <div id="header">
+            <div id="warning">
+                Try using Chrome or Chromium if the game runs too sluggish. Sorry.
+            </div>
             <b>WASD</b> (strafe) + <b>cursor keys</b> (rotate) |
             shoot with <b>space</b> | start level: <b>enter</b>
             <div id="msg">

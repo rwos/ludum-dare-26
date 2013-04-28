@@ -29,34 +29,6 @@ function goal_color(dist) {
     return "rgb(255," + d + ",255)";
 }
 
-function draw_slice(x, dist, type) {
-    var height = WALL_HEIGHT/dist;
-    if (dist == 0)
-        height = H;
-    var health_percentage = player.health/PLAYER_HEALTH;
-    // blur (sky + ground)
-    var blur = health_percentage - 0.3;
-    if (blur < 0.05) blur = 0.05;
-    var bg = CTX.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, "rgba(255, 255, 255, " + blur + ")");
-    bg.addColorStop(0.4, "rgba(221, 221, 221, " + blur + ")");
-    bg.addColorStop(0.6, "rgba(221, 221, 221, " + blur + ")");
-    bg.addColorStop(1, "rgba(170, 170, 170, " + blur + ")");
-    CTX.fillStyle = bg;
-    CTX.fillRect(x, 0, VERT_STEP, H);
-    // walls
-    var hfac = Math.random()*(1-health_percentage)*height/4;
-    var y_top = (H-height)/2+WALL_Y_OFF+player.height;
-    if (Math.random() <= health_percentage + 0.5) {
-        if (type == "X") {
-            CTX.fillStyle = goal_color(dist);
-        } else {
-            CTX.fillStyle = wall_color(dist);
-        }
-        CTX.fillRect(x, y_top+hfac, VERT_STEP, height);
-    }
-}
-
 function draw_blobs(blobs) {
 // includes hit trigger (for the "player shot blob" case)
     var z_buf = [];
@@ -150,15 +122,28 @@ function update_hud() {
     CTX.textAlign = "center";
     CTX.fillStyle = "#333";
     CTX.fillText(to_tri_str(Math.round(player.health)), W/2, 30);
-    LOG("health: " + player.health + " --> " + player.shooting + " | " + player.pos + " | " + player.dir);
 }
 
 //////////////////// FRAME
+
+var health_percentage;
+var blur;
+var bg;
 
 function update_screen() {
 // includes player-hit-by-blob updates (but it shouldn't)
     var FOV_STEP = FOV/W;
     blobs_seen = [];
+    // update some stuff used by draw_slice
+    health_percentage = player.health/PLAYER_HEALTH;
+    blur = health_percentage - 0.3;
+    if (blur < 0.05) blur = 0.05;
+    bg = CTX.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, "rgba(255, 255, 255, " + blur + ")");
+    bg.addColorStop(0.4, "rgba(221, 221, 221, " + blur + ")");
+    bg.addColorStop(0.6, "rgba(221, 221, 221, " + blur + ")");
+    bg.addColorStop(1, "rgba(170, 170, 170, " + blur + ")");
+    // draw slices
     for (var x = 0; x < W; x += VERT_STEP) {
         var dir = (player.dir - FOV/2) + x*FOV_STEP;
         var hit = cast_ray(x, dir);
@@ -167,6 +152,27 @@ function update_screen() {
     draw_blobs(blobs_seen);
     update_player_health(blobs_seen);
 }
+
+function draw_slice(x, dist, type) {
+    var height = WALL_HEIGHT/dist;
+    if (dist == 0)
+        height = H;
+    // blur (sky + ground)
+    CTX.fillStyle = bg;
+    CTX.fillRect(x, 0, VERT_STEP, H);
+    // walls
+    var hfac = Math.random()*(1-health_percentage)*height/4;
+    var y_top = (H-height)/2+WALL_Y_OFF+player.height;
+    if (Math.random() <= health_percentage + 0.5) {
+        if (type == "X") {
+            CTX.fillStyle = goal_color(dist);
+        } else {
+            CTX.fillStyle = wall_color(dist);
+        }
+        CTX.fillRect(x, y_top+hfac, VERT_STEP, height);
+    }
+}
+
 
 var LEVEL_WON = false;
 var LEVEL_LOST = false;

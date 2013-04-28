@@ -8,7 +8,8 @@ function LOG(v) {
     DEBUG.innerHTML = v;
 }
 
-var TIMEOUT = 10;
+var TARGET_FPS = 40;
+var TARGET_FRAME_TIME = 1000/TARGET_FPS;
 
 var FOV = 90 * (Math.PI / 180);
 var VERT_STEP = 8;
