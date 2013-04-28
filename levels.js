@@ -28,7 +28,7 @@ var levels = [
         ].reverse(),
         canvas_pos: [14, 0],
         blobs: [
-            {pos: [11.5, 0.5], dir: -Math.PI/2, color: "blue", health: 1},
+            {pos: [10.4, 0.5], dir: 0, color: "blue", health: 1},
         ],
     },
     // LEVEL 3
@@ -68,7 +68,7 @@ var levels = [
             "###############################  #  ##",
             "                   #                  ",
             "                   #       #        ##",
-            "               #   #           #      ",
+            "               #   #                  ",
             "               #   #                  ",
             "########  #    #   ###   #    ########",
             "X              #                     #",
@@ -360,7 +360,7 @@ var LEVEL;
 var MAP;
 var BLOBS;
 
-var CURRENT_LEVEL = 10;
+var CURRENT_LEVEL = 0;
 
 function switch_to_level(n) {
     CURRENT_LEVEL = n;

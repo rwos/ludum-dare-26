@@ -6,6 +6,7 @@ var UP = 38;
 var DOWN = 40;
 var LEFT = 37;
 var RIGHT = 39;
+var ENTER = 13;
 
 function ord(c) {
     return c.charCodeAt(0);
@@ -16,7 +17,7 @@ document.onkeydown = function(e) {
     var code = e.keyCode;
     KEY[code] = true;
     if (code == UP || code == DOWN || code == LEFT || code == RIGHT
-    ||  code == ord(" "))
+    ||  code == ord(" ") || code == ENTER)
         e.preventDefault();
 }
 document.onkeyup = function(e) {
@@ -63,7 +64,15 @@ function display_message(y, s) {
 }
 
 function menu_frame() {
+    var ol = CTX.createLinearGradient(0, 0, W, 0);
+    ol.addColorStop(0,   "rgba(0, 0, 0, 0.5)");
+    ol.addColorStop(1,   "rgba(0, 0, 0, 0.5)");
+    ol.addColorStop(0.2, "rgba(0, 0, 0, 0.2)");
+    ol.addColorStop(0.5, "rgba(0, 0, 0, 0)");
+    ol.addColorStop(0.8, "rgba(0, 0, 0, 0.2)");
     CTX.fillStyle = "#ddd";
+    CTX.fillRect(0, 0, W, H);
+    CTX.fillStyle = ol;
     CTX.fillRect(0, 0, W, H);
     // border
     CTX.fillStyle = "#333";
@@ -79,7 +88,7 @@ function menu_frame() {
         display_message(80, "You hello!");
         display_message(430, "You start!");
     }
-    if (KEY[ord(" ")]) {
+    if (KEY[ENTER]) {
         switch_to_level(CURRENT_LEVEL);
         return 1;
     }

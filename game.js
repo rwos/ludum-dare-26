@@ -33,22 +33,20 @@ function draw_slice(x, dist, type) {
     var height = WALL_HEIGHT/dist;
     if (dist == 0)
         height = H;
-    var y_top = (H-height)/2+WALL_Y_OFF+player.height;
     var health_percentage = player.health/PLAYER_HEALTH;
-    var hfac = Math.random()*(1-health_percentage)*height;
-    var bg = CTX.createLinearGradient(0, 0, 0, H);
+    // blur (sky + ground)
     var blur = health_percentage - 0.3;
     if (blur < 0.05) blur = 0.05;
-    //bg.addColorStop(0, "#fff");
-    //bg.addColorStop(0.4, "#ddd");
-    //bg.addColorStop(0.6, "#ddd");
-    //bg.addColorStop(1, "#aaa");
+    var bg = CTX.createLinearGradient(0, 0, 0, H);
     bg.addColorStop(0, "rgba(255, 255, 255, " + blur + ")");
     bg.addColorStop(0.4, "rgba(221, 221, 221, " + blur + ")");
     bg.addColorStop(0.6, "rgba(221, 221, 221, " + blur + ")");
     bg.addColorStop(1, "rgba(170, 170, 170, " + blur + ")");
     CTX.fillStyle = bg;
     CTX.fillRect(x, 0, VERT_STEP, H);
+    // walls
+    var hfac = Math.random()*(1-health_percentage)*height/4;
+    var y_top = (H-height)/2+WALL_Y_OFF+player.height;
     if (Math.random() <= health_percentage + 0.5) {
         if (type == "X") {
             CTX.fillStyle = goal_color(dist);
@@ -98,6 +96,7 @@ function player_world_at(pos) {
     if (hit == "X") {
         FLASH = FLASH_DURATION;
         FLASH_COLOR = "#fff";
+        player.shooting = false;
         level_won();
         return false;
     }
@@ -107,7 +106,11 @@ function player_world_at(pos) {
 function player_move(pos, dir, dist) {
     player.cycle += 1;
     var end = move_2d(pos, dir, dist);
-    update_level_canvas(end, 0, 0, 0, 1); // XXX DEBUG : 120
+    if (player.shooting) {
+        update_level_canvas(end, 0, 0, 0, 10);
+    } else {
+        update_level_canvas(end, 0, 0, 0, 120);
+    }
     if (player_world_at(end)) {
         if (! player_world_at([end[0], pos[1]])) {
             return [end[0], pos[1]];
@@ -129,6 +132,7 @@ function update_player_health(blobs) {
             if (player.health <= 0) {
                 FLASH = FLASH_DURATION;
                 FLASH_COLOR = "#f00";
+                player.shooting = false;
                 level_lost();
             }
         }
@@ -185,7 +189,7 @@ function game_frame() {
     if (KEY[RIGHT]) {
         player.dir += ANG_SPEED;
     }
-    if (KEY[ord(" ")] && player.cycle > 1) {
+    if (KEY[ord(" ")]) {
         player.shooting = true;
         // jitter
         player.dir += (Math.random()-0.5)/25;

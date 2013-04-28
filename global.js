@@ -21,7 +21,7 @@ var BLOB_HEIGHT = 300;
 var BLOB_SIZE = 0.8;
 
 var SPEED = 0.05;
-var ANG_SPEED = 0.05;
+var ANG_SPEED = 0.04;
 
 var BLOB_SPEED = 0.06;
 
